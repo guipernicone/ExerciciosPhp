@@ -124,7 +124,7 @@ class Resolucao implements TextWrapInterface {
 
 $teste = new Resolucao();
 
-$texto = "Se vi mais longe foi por estar de pé sobre ombros de gigantes";
+//$texto = "Se vi mais longe foi por estar de pé sobre ombros de gigantes";
 
 //$texto = "12345678 9";
 
@@ -133,10 +133,10 @@ $limiteLinha =8;
 
 $res = $teste->textWrap($texto,$limiteLinha);
 
-echo("Resultado:</br>");
+/*echo("Resultado:</br>");
 foreach($res as $print){
   print_r($print);
   echo("</br>");
-}
+}*/
 ?>
 
