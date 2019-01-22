@@ -12,9 +12,9 @@ class Resolucao implements TextWrapInterface {
    */
   public function textWrap(string $text, int $length): array {
     $resultado = array();
-    $j = 0;
-    $posLinha = 0;
-    $linha = 0;
+    $j = 0;/*Variavel de iteração */
+    $posLinha = 0;/*Representa a posição do cursor na linha */
+    $linha = 0;/*Represeta a linha atual*/
 
     /*Separa cada palavra da string fornecida em uma posicao do array teste, removendo todos espaços */
     $palavras = explode(" ",$text);
@@ -26,13 +26,28 @@ class Resolucao implements TextWrapInterface {
   
       /*Verifica se a palavra é maior que o limite da linha */
       if($lenPalavra >$length){
-    
+        
      
-        /*Verifica se o cursor ja nao esta no fim de uma linha */
-        if($posLinha == $length){
-          $posLinha = 0;
-          $linha++;
-        }
+          /*Verifica se o cursor ja nao esta no fim de uma linha */
+          if($posLinha == $length){
+            $posLinha = 0;
+            $linha++;
+          }
+          else{/*Verifica se é preciso espaço antes da palavra ou nao */
+            if($posLinha != 0){/*Verifica se o cursao nao esta no inicio de uma linha */
+
+              $posLinha++;/*Simula um espaço inserido */
+
+              /*Verifica se o cursor esta no fim de uma linha */
+              if($posLinha == $length){
+                $posLinha = 0;
+                $linha++;
+              }
+              else{
+                $resultado[$linha] .= " ";/*Adiciona  um espaço*/
+              }
+           }
+          }
           /*Realiza o while enquanto a palavra nao tenha sido completamente 
           * copiada ao array resultado 
           */
@@ -57,18 +72,24 @@ class Resolucao implements TextWrapInterface {
             }
           }
           /*Verifica se após a palavra existira espaço ou nao */
-          if($posLinha != 0 && $posLinha < $length){
+          /*if($posLinha != 0 && $posLinha < $length){
             $resultado[$linha] .= " ";
             $posLinha++;
-          }
+          }*/
       }
       else{/*Caso a palavra é menor que o limite da linha */
+
+        if($posLinha != 0 && $posLinha != $length){
+          $posLinha++;
+        }
         if($lenPalavra <= ($length-$posLinha)){/*Caso a palavra coube dentro do limite da linha */
+
           /*Verifica se o index do array ja existe*/
           if(array_key_exists($linha, $resultado) == false){
             $resultado[$linha] = $palavra;
           }
           else{
+            $resultado[$linha] .= " ";
             $resultado[$linha] .= $palavra;
           }
          
@@ -90,10 +111,10 @@ class Resolucao implements TextWrapInterface {
         }
         
          /*Verifica se após a palavra existira espaço ou nao */
-         if($posLinha != 0 && $posLinha < $length){
+         /*if($posLinha != 0 && $posLinha < $length){
           $resultado[$linha] .= " ";
           $posLinha++;
-        }
+        }*/
       }
     }
 
@@ -103,10 +124,12 @@ class Resolucao implements TextWrapInterface {
 
 $teste = new Resolucao();
 
-//$texto = "Se vi mais longe foi por estar de pé sobre ombros de gigantes";
+$texto = "Se vi mais longe foi por estar de pé sobre ombros de gigantes";
 
-$texto = "O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.";
-$limiteLinha =50;
+//$texto = "12345678 9";
+
+//$texto = "O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.";
+$limiteLinha =8;
 
 $res = $teste->textWrap($texto,$limiteLinha);
 
@@ -116,3 +139,4 @@ foreach($res as $print){
   echo("</br>");
 }
 ?>
+
