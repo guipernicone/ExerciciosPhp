@@ -18,7 +18,8 @@ class Resolucao implements TextWrapInterface {
 
     /*Separa cada palavra da string fornecida em uma posicao do array teste, removendo todos espaços */
     $palavras = explode(" ",$text);
-      /*Verifica se o texto já foi completamente formatdo */
+
+    /*Formata a string apartir do limite da linha*/
     foreach($palavras as $palavra){
 
       $lenPalavra = strlen($palavra);
@@ -26,27 +27,17 @@ class Resolucao implements TextWrapInterface {
       /*Verifica se a palavra é maior que o limite da linha */
       if($lenPalavra >$length){
         
-    
-          /*Verifica se o cursor ja nao esta no fim de uma linha */
-          if($posLinha == $length){
+          $posLinha++;/*Simula um espaço inserido */
+
+          /*Verifica se o cursor após a simulação do espaço esta no fim de uma linha ou se ultrapassou o limite*/
+          if($posLinha >= $length){
             $posLinha = 0;
             $linha++;
           }
-          else{/*Verifica se é preciso espaço antes da palavra ou nao */
-            if($posLinha != 0){/*Verifica se o cursao nao esta no inicio de uma linha */
-
-              $posLinha++;/*Simula um espaço inserido */
-
-              /*Verifica se o cursor esta no fim de uma linha */
-              if($posLinha == $length){
-                $posLinha = 0;
-                $linha++;
-              }
-              else{
-                $resultado[$linha] .= " ";/*Adiciona  um espaço*/
-              }
+          else{
+            $resultado[$linha] .= " ";/*Adiciona  um espaço*/
           }
-          }
+          
           /*Realiza o while enquanto a palavra nao tenha sido completamente 
           * copiada ao array resultado 
           */
@@ -73,7 +64,7 @@ class Resolucao implements TextWrapInterface {
       }
       else{/*Caso a palavra é menor que o limite da linha */
 
-        if($posLinha != 0 && $posLinha != $length){
+        if($posLinha != 0 && $posLinha != $length){/*Simula um espaço*/
           $posLinha++;
         }
         if($lenPalavra <= ($length-$posLinha)){/*Caso a palavra coube dentro do limite da linha */
@@ -83,7 +74,7 @@ class Resolucao implements TextWrapInterface {
             $resultado[$linha] = $palavra;
           }
           else{
-            $resultado[$linha] .= " ";
+            $resultado[$linha] .= " ";/*Adiciona um espaço */
             $resultado[$linha] .= $palavra;
           }
         
@@ -97,17 +88,12 @@ class Resolucao implements TextWrapInterface {
           $resultado[$linha] = $palavra;
           $posLinha += $lenPalavra;
         }
-
-        /*Verifica se chegou ao limite da linha*/
-        if($posLinha == $length){
-          $posLinha = 0;
-          $linha++;
-        }
       }
     }
     return $resultado;
   }
 }
+
 /*
 $teste = new Resolucao();
 
@@ -117,9 +103,9 @@ $teste = new Resolucao();
 //$texto = "Um teste para palavras maiores que o limite da linha 12345678 como horizontalmente";
 //$texto = "";
 //$texto = "O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.";
-$texto = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla at risus. Quisque purus magna, auctor et, sagittis ac, posuere eu, lectus. Nam mattis, felis ut adipiscing";
+//$texto = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla at risus. Quisque purus magna, auctor et, sagittis ac, posuere eu, lectus. Nam mattis, felis ut adipiscing";
 
-$limiteLinha = 30;
+$limiteLinha = 10;
 
 $res = $teste->textWrap($texto,$limiteLinha);
 
@@ -129,3 +115,4 @@ foreach($res as $print){
   echo("</br>");
 }
 */
+
